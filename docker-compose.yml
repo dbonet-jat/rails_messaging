@@ -11,7 +11,7 @@ services:
     volumes:
       - ./recruitment:/usr/src/app
     environment:
-      - WEBPACKER_DEV_SERVER_HOST=webpack-dev-server
+      - WEBPACKER_DEV_SERVER_HOST=recruitment-webpack-dev-server
   recruitment-webpack-dev-server:
     build:
       context: ./recruitment
@@ -33,5 +33,38 @@ services:
       - ./recruitment/.env/development/database
     volumes:
       - recruitment_db_data:/var/lib/postgresql/data
+  onboarding:
+    build:
+      context: ./onboarding
+    ports:
+        - "3001:3000"
+    env_file:
+      - ./onboarding/.env/development/database
+      - ./onboarding/.env/development/web
+    volumes:
+      - ./onboarding:/usr/src/app
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=onboarding-webpack-dev-server
+  onboarding-webpack-dev-server:
+    build:
+      context: ./onboarding
+    command: ./bin/webpack-dev-server
+    ports:
+      - 3036:3035
+    volumes:
+      - ./onboarding:/usr/src/app
+    env_file:
+      - ./onboarding/.env/development/database
+      - ./onboarding/.env/development/web
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+  onboarding-database:
+    image: postgres
+    env_file:
+      - ./onboarding/.env/development/database
+    volumes:
+      - onboarding_db_data:/var/lib/postgresql/data
+
 volumes:
   recruitment_db_data:
+  onboarding_db_data:
