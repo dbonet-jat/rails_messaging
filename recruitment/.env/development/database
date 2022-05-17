@@ -1,0 +1,4 @@
+POSTGRES_USER=user
+POSTGRES_PASSWORD=development-password
+POSTGRES_DB=recruiting_development
+REDIS_URL=redis://redis:6379/recruiting/
