@@ -1,0 +1,51 @@
+<div class="container mx-auto my-8 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="h3"><%= link_to 'Candidates', candidates_path, class: "btn btn-link font-bold" %> > Candidate #<%= @candidate.short_name %></h1>
+      <%= link_to 'Edit', edit_candidate_path(@candidate), class: "btn btn-link" %>
+    </div>
+
+    <div class="bg-white rounded shadow p-8">
+            <div class="mb-4">
+        <h5>Fullname</h5>
+         <% if Candidate.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:fullname) %>
+          <%= link_to @candidate.try(:fullname).short_name, @candidate.try(:fullname),class: "btn btn-link"  %>
+        <% else %>
+          <%= @candidate.fullname %>
+        <% end %>
+
+      </div>
+            <div class="mb-4">
+        <h5>Email</h5>
+         <% if Candidate.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:email) %>
+          <%= link_to @candidate.try(:email).short_name, @candidate.try(:email),class: "btn btn-link"  %>
+        <% else %>
+          <%= @candidate.email %>
+        <% end %>
+
+      </div>
+            <div class="mb-4">
+        <h5>Hired</h5>
+         <% if Candidate.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:hired) %>
+          <%= link_to @candidate.try(:hired).short_name, @candidate.try(:hired),class: "btn btn-link"  %>
+        <% else %>
+          <%= @candidate.hired %>
+        <% end %>
+
+      </div>
+          </div>
+  </div>
+</div>
+<div class="container mx-auto px-4">
+<% Candidate.reflect_on_all_associations(:has_many).each do |a| %>
+  <div class="border-2 rounded-md max-w-6xl mx-auto">
+    <%= link_to a.try(:plural_name).capitalize, ("/" + a.try(:plural_name)), class: "btn btn-link font-bold"%>
+    <% (@candidate.send a.try(:plural_name).to_sym).each do |a_instance| %>
+      <div class='border-2'>
+        <%= link_to a_instance.short_name, a_instance, class: "btn btn-link" %>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+</div>
+

@@ -1,0 +1,51 @@
+<div class="container mx-auto my-8 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="h3"><%= link_to 'Tasks', tasks_path, class: "btn btn-link font-bold" %> > Task #<%= @task.short_name %></h1>
+      <%= link_to 'Edit', edit_task_path(@task), class: "btn btn-link" %>
+    </div>
+
+    <div class="bg-white rounded shadow p-8">
+            <div class="mb-4">
+        <h5>Employee</h5>
+         <% if Task.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:employee) %>
+          <%= link_to @task.try(:employee).short_name, @task.try(:employee),class: "btn btn-link"  %>
+        <% else %>
+          <%= @task.employee %>
+        <% end %>
+
+      </div>
+            <div class="mb-4">
+        <h5>Email</h5>
+         <% if Task.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:email) %>
+          <%= link_to @task.try(:email).short_name, @task.try(:email),class: "btn btn-link"  %>
+        <% else %>
+          <%= @task.email %>
+        <% end %>
+
+      </div>
+            <div class="mb-4">
+        <h5>Task</h5>
+         <% if Task.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:task) %>
+          <%= link_to @task.try(:task).short_name, @task.try(:task),class: "btn btn-link"  %>
+        <% else %>
+          <%= @task.task %>
+        <% end %>
+
+      </div>
+          </div>
+  </div>
+</div>
+<div class="container mx-auto px-4">
+<% Task.reflect_on_all_associations(:has_many).each do |a| %>
+  <div class="border-2 rounded-md max-w-6xl mx-auto">
+    <%= link_to a.try(:plural_name).capitalize, ("/" + a.try(:plural_name)), class: "btn btn-link font-bold"%>
+    <% (@task.send a.try(:plural_name).to_sym).each do |a_instance| %>
+      <div class='border-2'>
+        <%= link_to a_instance.short_name, a_instance, class: "btn btn-link" %>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+</div>
+

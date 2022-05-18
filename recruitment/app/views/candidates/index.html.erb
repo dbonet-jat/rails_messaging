@@ -1,0 +1,64 @@
+
+
+<div class="flex flex-wrap items-center justify-between">
+  <div class="w-full lg:w-1/2">
+    <h1 class="text-2xl">Candidates</h1>
+  </div>
+
+  <div class="w-full lg:w-1/2 lg:text-right">
+    <%= link_to new_candidate_path, class: 'btn btn-default' do %>
+      Add New Candidate
+    <% end %>
+  </div>
+</div>
+
+<table class="w-full max-w-full mb-1 bg-transparent border-collapse">
+  <thead>
+    <tr>
+      
+
+              <th class="border-2">Fullname</th>
+              <th class="border-2">Email</th>
+              <th class="border-2">Hired</th>
+            
+        <th></th>
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @candidates.each do |candidate| %>
+      <%= content_tag :tr, id: dom_id(candidate), class: dom_class(candidate) do %>
+        
+
+                  <td class="border-2">
+            <% if Candidate.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:fullname) %>
+            <%= link_to candidate.try(:fullname).short_name, candidate.try(:fullname),class: "btn btn-link"  %>
+            <% else %>
+            <%= candidate.fullname %>
+            <% end %>
+          </td>
+                  <td class="border-2">
+            <% if Candidate.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:email) %>
+            <%= link_to candidate.try(:email).short_name, candidate.try(:email),class: "btn btn-link"  %>
+            <% else %>
+            <%= candidate.email %>
+            <% end %>
+          </td>
+                  <td class="border-2">
+            <% if Candidate.reflect_on_all_associations(:belongs_to).map{|e| e.name}.include?(:hired) %>
+            <%= link_to candidate.try(:hired).short_name, candidate.try(:hired),class: "btn btn-link"  %>
+            <% else %>
+            <%= candidate.hired %>
+            <% end %>
+          </td>
+        
+        
+          <td><%= link_to 'Show', candidate %></td>
+        
+        <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+
